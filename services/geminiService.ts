@@ -83,7 +83,7 @@ export const generateVeoPrompt = async (script: Script, config: AppConfig): Prom
       "hashtags": [],
       "ctaVariations": []
     }
-  
+  `;
 
   const result = await callTextAI(prompt);
   const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
