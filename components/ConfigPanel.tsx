@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Upload, Loader2, Wand2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { AppConfig, VideoStyle, VideoType, Language, Accent, VisionAnalysis } from '../types';
-import { analyzeProductImage, fileToGenerativePart } from '../services/geminiService';
+import { fileToGenerativePart } from '../services/geminiService';
 import { AnalysisChart } from './AnalysisChart';
 
 interface ConfigPanelProps {
@@ -22,7 +22,11 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, setConfig, onG
     setIsAnalyzing(true);
     try {
       const base64 = await fileToGenerativePart(file);
-      const analysis = await analyzeProductImage(base64);
+      const analysis = await fetch("/api/vision", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ base64Image: base64 }),
+}).then(res => res.json());
       
       setConfig(prev => ({
         ...prev,
