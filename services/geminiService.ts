@@ -57,11 +57,9 @@ export const generateScripts = async (config: AppConfig): Promise<Script[]> => {
       }
     ]
   `;
-
   const result = await callTextAI(prompt);
   const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error("Script generation failed");
-
   return JSON.parse(text);
 };
 
@@ -88,6 +86,5 @@ export const generateVeoPrompt = async (script: Script, config: AppConfig): Prom
   const result = await callTextAI(prompt);
   const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error("Generate VEO Prompt failed");
-
   return JSON.parse(text);
 };
