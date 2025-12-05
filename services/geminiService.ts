@@ -21,8 +21,18 @@ export const fileToGenerativePart = async (file: File): Promise<string> => {
 
 // --- 1. Vision Analysis ---
 export const analyzeProductImage = async (base64Image: string): Promise<VisionAnalysis> => {
-  const ai = getAI();
-  
+  const res = await fetch("/api/vision", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ base64Image }),
+  });
+
+  const data = await res.json();
+  if (!data?.result) throw new Error("No response from Vision API");
+
+  return JSON.parse(data.result);
+};
+
   const prompt = `
     Phân tích hình ảnh sản phẩm thời trang này để viết kịch bản video marketing.
     Trích xuất các chi tiết sau dưới dạng JSON (Giá trị trả về phải bằng Tiếng Việt):
